@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import {
   Home,
   Grid,
@@ -6,17 +6,18 @@ import {
   Smartphone,
   CreditCard,
   PackageCheck,
-  ChevronRight
+  LogIn
 } from "lucide-react";
 
 export default function ScreenSwitcher({ currentScreen, setCurrentScreen }) {
   const screens = [
-    { id: "home", num: 1, label: "Homepage", subtitle: "Global Marketplace", icon: Home },
-    { id: "listing", num: 2, label: "Product Listing", subtitle: "Browse & Discover", icon: Grid },
-    { id: "dashboard", num: 3, label: "Vendor Dashboard", subtitle: "Manage & Grow", icon: LayoutDashboard },
-    { id: "product", num: 4, label: "Product Details", subtitle: "Buy with Confidence", icon: PackageCheck },
-    { id: "checkout", num: 5, label: "Checkout", subtitle: "Secure Escrow", icon: CreditCard },
-    { id: "mobile", num: 6, label: "Mobile App", subtitle: "On the Go, Anywhere", icon: Smartphone },
+    { id: "home", label: "Homepage", subtitle: "Global Marketplace", icon: Home },
+    { id: "listing", label: "Product Listing", subtitle: "Browse & Discover", icon: Grid },
+    { id: "dashboard", label: "Vendor Dashboard", subtitle: "Manage & Grow", icon: LayoutDashboard },
+    { id: "product", label: "Product Details", subtitle: "Buy with Confidence", icon: PackageCheck },
+    { id: "checkout", label: "Checkout", subtitle: "Secure Escrow", icon: CreditCard },
+    { id: "mobile", label: "Mobile App", subtitle: "On the Go, Anywhere", icon: Smartphone },
+    { id: "login", label: "Login / Sign Up", subtitle: "Demo Access", icon: LogIn },
   ];
 
   return (
@@ -28,10 +29,10 @@ export default function ScreenSwitcher({ currentScreen, setCurrentScreen }) {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
           </span>
           <span className="font-semibold text-slate-200 tracking-wide">BazaarGo Prototype:</span>
-          <span className="text-slate-400 hidden sm:inline">6 Screen UI Mockup Views</span>
+          <span className="text-slate-400 hidden sm:inline">Interactive Views</span>
         </div>
 
-        {/* Screen Tabs */}
+        {/* Screen Tabs without numbers */}
         <div className="flex items-center overflow-x-auto space-x-1 sm:space-x-1.5 py-1">
           {screens.map((s) => {
             const Icon = s.icon;
@@ -40,19 +41,12 @@ export default function ScreenSwitcher({ currentScreen, setCurrentScreen }) {
               <button
                 key={s.id}
                 onClick={() => setCurrentScreen(s.id)}
-                className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-md font-medium transition-all whitespace-nowrap cursor-pointer ${
+                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg font-medium transition-all whitespace-nowrap cursor-pointer ${
                   isActive
-                    ? "bg-[#f95721] text-white shadow-sm ring-1 ring-orange-400"
+                    ? "bg-[#f95721] text-white shadow-sm ring-1 ring-orange-400 font-semibold"
                     : "text-slate-300 hover:bg-slate-800 hover:text-white"
                 }`}
               >
-                <span
-                  className={`flex items-center justify-center w-4 h-4 rounded-full text-[10px] font-bold ${
-                    isActive ? "bg-white text-[#f95721]" : "bg-slate-700 text-slate-300"
-                  }`}
-                >
-                  {s.num}
-                </span>
                 <Icon className="w-3.5 h-3.5" />
                 <span>{s.label}</span>
               </button>

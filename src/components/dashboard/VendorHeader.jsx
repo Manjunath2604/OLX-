@@ -1,7 +1,13 @@
-﻿import React from "react";
+import React from "react";
 import { Search, Bell, ChevronDown, ExternalLink } from "lucide-react";
 
-export default function VendorHeader({ setCurrentScreen }) {
+export default function VendorHeader({ setCurrentScreen, currentUser }) {
+  const user = currentUser || {
+    name: "John Doe",
+    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80",
+    badge: "Verified Merchant"
+  };
+
   return (
     <header className="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between gap-4">
       {/* Search Input */}
@@ -25,6 +31,14 @@ export default function VendorHeader({ setCurrentScreen }) {
           <ExternalLink className="w-3.5 h-3.5" />
         </button>
 
+        {/* Demo Switch User link */}
+        <button
+          onClick={() => setCurrentScreen("login")}
+          className="text-xs font-semibold text-orange-600 hover:text-orange-700 bg-orange-50 px-2.5 py-1 rounded-lg border border-orange-200 cursor-pointer hidden sm:block"
+        >
+          Switch Demo User
+        </button>
+
         {/* Notifications */}
         <div className="relative">
           <button className="p-2 rounded-xl text-slate-600 hover:bg-slate-100 relative cursor-pointer">
@@ -34,15 +48,19 @@ export default function VendorHeader({ setCurrentScreen }) {
         </div>
 
         {/* Profile Pill */}
-        <div className="flex items-center space-x-3 pl-3 border-l border-slate-200">
+        <div
+          onClick={() => setCurrentScreen("login")}
+          className="flex items-center space-x-3 pl-3 border-l border-slate-200 cursor-pointer hover:opacity-80"
+          title="Click to switch or view account"
+        >
           <img
-            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
-            alt="John Doe"
+            src={user.avatar}
+            alt={user.name}
             className="w-9 h-9 rounded-full object-cover border border-slate-200"
           />
           <div className="hidden sm:block text-left">
-            <h5 className="text-xs font-bold text-slate-900 leading-tight">John Doe</h5>
-            <span className="text-[10px] text-[#f95721] font-semibold">Seller Level 2</span>
+            <h5 className="text-xs font-bold text-slate-900 leading-tight">{user.name}</h5>
+            <span className="text-[10px] text-[#f95721] font-semibold">{user.badge || "Verified Merchant"}</span>
           </div>
           <ChevronDown className="w-3.5 h-3.5 text-slate-400 hidden sm:block" />
         </div>

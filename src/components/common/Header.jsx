@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+import React, { useState } from "react";
 import {
   Search,
   Globe,
@@ -9,7 +9,9 @@ import {
   X,
   ChevronDown,
   Layers,
-  ShieldCheck
+  ShieldCheck,
+  LogIn,
+  LogOut
 } from "lucide-react";
 
 export default function Header({
@@ -19,7 +21,9 @@ export default function Header({
   setSearchQuery,
   cartCount = 2,
   selectedCategory,
-  setSelectedCategory
+  setSelectedCategory,
+  currentUser,
+  setCurrentUser
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currencyDropdown, setCurrencyDropdown] = useState(false);
@@ -166,28 +170,63 @@ export default function Header({
               )}
             </div>
 
-            {/* User Profile / Dashboard Link */}
-            <button
-              onClick={() => setCurrentScreen("dashboard")}
-              title="Vendor Dashboard & Profile"
-              className="flex items-center space-x-1.5 p-2 rounded-xl text-slate-700 hover:bg-slate-100 hover:text-[#f95721] transition-colors cursor-pointer"
-            >
-              <User className="w-5 h-5" />
-              <span className="text-xs font-semibold hidden md:inline">John Doe</span>
-            </button>
+            {/* User Profile / Login Link */}
+            {currentUser ? (
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => {
+                    if (currentUser.role === "seller") {
+                      setCurrentScreen("dashboard");
+                    } else {
+                      setCurrentScreen("login");
+                    }
+                  }}
+                  title={`Signed in as ${currentUser.name} (${currentUser.role})`}
+                  className="flex items-center space-x-1.5 p-1.5 rounded-xl text-slate-700 hover:bg-slate-100 hover:text-[#f95721] transition-colors cursor-pointer"
+                >
+                  {currentUser.avatar ? (
+                    <img
+                      src={currentUser.avatar}
+                      alt={currentUser.name}
+                      className="w-7 h-7 rounded-full object-cover border border-slate-200"
+                    />
+                  ) : (
+                    <User className="w-5 h-5" />
+                  )}
+                  <span className="text-xs font-bold text-slate-800 hidden md:inline truncate max-w-[100px]">
+                    {currentUser.name}
+                  </span>
+                </button>
+                <button
+                  onClick={() => {
+                    setCurrentUser(null);
+                    setCurrentScreen("login");
+                  }}
+                  title="Sign Out"
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-slate-100 transition-colors hidden sm:inline-flex cursor-pointer"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setCurrentScreen("login")}
+                title="Sign In / Register"
+                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-slate-700 hover:bg-slate-100 hover:text-[#f95721] transition-colors cursor-pointer border border-slate-200"
+              >
+                <LogIn className="w-4 h-4 text-[#f95721]" />
+                <span className="text-xs font-bold">Sign In</span>
+              </button>
+            )}
 
-            {/* Cart / Saved Items */}
+            {/* Cart / Saved Items (Number removed) */}
             <button
               onClick={() => setCurrentScreen("checkout")}
               title="View Cart & Checkout"
               className="relative p-2 rounded-xl text-slate-700 hover:bg-slate-100 hover:text-[#f95721] transition-colors cursor-pointer"
             >
               <ShoppingBag className="w-5 h-5" />
-              {cartCount > 0 && (
-                <span className="absolute top-1 right-1 bg-[#f95721] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">
-                  {cartCount}
-                </span>
-              )}
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#f95721] ring-2 ring-white"></span>
             </button>
 
             {/* Sell Button CTA */}
@@ -258,6 +297,15 @@ export default function Header({
               className="text-left px-3 py-2 rounded-lg hover:bg-slate-100"
             >
               📱 Mobile App
+            </button>
+            <button
+              onClick={() => {
+                setCurrentScreen("login");
+                setMobileMenuOpen(false);
+              }}
+              className="text-left px-3 py-2 rounded-lg hover:bg-slate-100 font-bold text-[#f95721]"
+            >
+              🔐 Demo Sign In
             </button>
           </div>
         </div>

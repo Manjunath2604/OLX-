@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import ScreenSwitcher from "./components/common/ScreenSwitcher";
 import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
@@ -38,12 +38,16 @@ import SuccessModal from "./components/checkout/SuccessModal";
 // Screen 6: Mobile App Showcase
 import MobileShowcase from "./components/mobile/MobileShowcase";
 
+// Demo Auth Page
+import AuthPage from "./components/auth/AuthPage";
+
 // Data
 import { products } from "./data/products";
 import { ChevronRight, ArrowRight, ShieldCheck } from "lucide-react";
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState("home");
+  const [currentUser, setCurrentUser] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   
@@ -174,7 +178,7 @@ export default function App() {
             setCurrentScreen={setCurrentScreen}
           />
           <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
-            <VendorHeader setCurrentScreen={setCurrentScreen} />
+            <VendorHeader setCurrentScreen={setCurrentScreen} currentUser={currentUser} />
             <main className="p-4 sm:p-6 lg:p-8 space-y-6 flex-1">
               <StatCards />
 
@@ -211,6 +215,8 @@ export default function App() {
             cartCount={2}
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
           />
 
           <main className="flex-1">
@@ -394,6 +400,17 @@ export default function App() {
             {currentScreen === "mobile" && (
               <div className="animate-fade-in">
                 <MobileShowcase onSelectProduct={handleSelectProduct} />
+              </div>
+            )}
+
+            {/* SCREEN: DEMO LOGIN & SIGN UP */}
+            {currentScreen === "login" && (
+              <div className="animate-fade-in">
+                <AuthPage
+                  currentUser={currentUser}
+                  setCurrentUser={setCurrentUser}
+                  setCurrentScreen={setCurrentScreen}
+                />
               </div>
             )}
           </main>
